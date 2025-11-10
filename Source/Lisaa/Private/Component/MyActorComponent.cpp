@@ -1,0 +1,67 @@
+#include "Component/MyActorComponent.h"
+
+#include "GameFramework/Actor.h"
+#include "Component/MyActorComponent.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+
+
+
+UMyActorComponent::UMyActorComponent()
+{
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+
+void UMyActorComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	OwnerChar = Cast<ACharacter>(GetOwner());
+}
+
+
+// Called every frame
+void UMyActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (!OwnerChar.IsValid())
+	return;
+
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (!PlayerPawn)
+		return;
+
+	UCharacterMovementComponent*MoveComp = OwnerChar->GetCharacterMovement();
+	if(!MoveComp)
+		return;
+
+	const FVector ToPlayer = PlayerPawn->GetActorLocation() - OwnerChar->GetActorLocation();
+	const float Dist2D = FVector::Dist2D(PlayerPawn->GetActorLocation(), OwnerChar->GetActorLocation());
+
+	float InRange = StopDistance;
+
+	if(Dist2D <= InRange)
+	{
+		OwnerChar -> ConsumeMovementInputVector();
+		MoveComp ->StopMovementImmediately();
+		return;
+	}
+
+	const FVector Dir =  ToPlayer.GetSafeNormal2D();
+	OwnerChar -> AddMovementInput(Dir, 1.f);
+
+	const FRotator Target = Dir.Rotation();
+	const FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Target, DeltaTime, 10.f);
+	OwnerChar -> SetActorRotation(NewRot);
+
+}
+
+
+
+
+
+
+
