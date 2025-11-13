@@ -98,7 +98,7 @@ void ACharaaaaaa::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
         }
         if (IA_MyJump)
         {
-            ETC->BindAction(IA_MyJump, ETriggerEvent::Started, this, &ACharaaaaaa::Move);
+            ETC->BindAction(IA_MyJump, ETriggerEvent::Started, this, &ACharaaaaaa::Jump);
         }
 
     }
