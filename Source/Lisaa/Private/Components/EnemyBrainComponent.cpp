@@ -1,5 +1,6 @@
 #include "Components/EnemyBrainComponent.h"
 
+#include "Components/MyAttackEnemyComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -14,6 +15,8 @@ void UEnemyBrainComponent::BeginPlay()
 	Super::BeginPlay();
 
 	OwnerChar = Cast<ACharacter>(GetOwner());
+
+	AttackComp = GetOwner()->FindComponentByClass<UMyAttackEnemyComponent>();
 }
 
 void UEnemyBrainComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -40,7 +43,8 @@ void UEnemyBrainComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	{
 		OwnerChar->ConsumeMovementInputVector();
 		MoveComp->StopMovementImmediately();
-		// lancer un attaque
+		if (AttackComp)
+			AttackComp->TryAttack(PlayerPawn);
 		return;
 	}
 
@@ -50,6 +54,6 @@ void UEnemyBrainComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	const FRotator Target = Dir.Rotation();
 	const FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Target, DeltaTime, 10.f);
 	OwnerChar->SetActorRotation(NewRot);
-	
+
 }
 

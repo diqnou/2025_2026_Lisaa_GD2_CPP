@@ -4,6 +4,9 @@
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
+
+class UMyAttackEnemyComponent;
+
 UCLASS()
 class LISAA_API AEnemyCharacter : public ACharacter
 {
@@ -17,9 +20,14 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float TouchDamage = 10.f;
+
+
+	
 	
 protected:
 	virtual void BeginPlay() override;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+	class UMyAttackEnemyComponent* AttackComp = nullptr;
 
 };
