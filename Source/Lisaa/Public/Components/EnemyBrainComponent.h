@@ -21,6 +21,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	class UEnemyAttackComponent* AttackComp = nullptr;
+
 private:
 	TWeakObjectPtr<class ACharacter> OwnerChar;
 
