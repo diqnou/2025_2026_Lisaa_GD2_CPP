@@ -32,11 +32,6 @@ void UWeaponBaseComponent::ResetCooldown()
 		NextFireTime = World->GetTimeSeconds();
 }
 
-void UWeaponBaseComponent::DoFire(AActor* Target)
-{
-	
-}
-
 AActor* UWeaponBaseComponent::AcquireNearestTarget(const FVector& Origin) const
 {
 	UWorld* World = GetWorld();

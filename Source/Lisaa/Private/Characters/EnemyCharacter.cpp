@@ -1,6 +1,7 @@
 #include "Characters/EnemyCharacter.h"
 
 #include "Components/EnemyAttackComponent.h"
+#include "Components/HealthComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Slate/SGameLayerManager.h"
 
@@ -16,6 +17,7 @@ AEnemyCharacter::AEnemyCharacter()
 	bUseControllerRotationYaw = false;
 
 	AttackComp = CreateDefaultSubobject<UEnemyAttackComponent>(TEXT("AttackComp"));
+	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -23,6 +25,17 @@ void AEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	GetCharacterMovement()->MaxWalkSpeed = MoveSpeed;
+
+	if (HealthComp)
+	{
+		HealthComp->OnDeath.AddDynamic(this, &AEnemyCharacter::OnSelfDeath);
+	}
 	
+}
+
+void AEnemyCharacter::OnSelfDeath(AActor* DeadActor)
+{
+	// PLAY VFX ; SFX
+	Destroy();
 }
 

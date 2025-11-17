@@ -5,7 +5,7 @@
 #include "WeaponBaseComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Abstract, Blueprintable, ClassGroup=(Combat), meta=(BlueprintSpawnableComponent) )
 class LISAA_API UWeaponBaseComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -39,7 +39,7 @@ protected:
 
 	virtual bool NeedsTarget() const { return true;}
 
-	virtual void DoFire(AActor* Target);
+	virtual void DoFire(AActor* Target) PURE_VIRTUAL(UWeaponBaseComponent::DoFire,);
 
 	AActor* AcquireNearestTarget(const FVector& Origin) const;
 
