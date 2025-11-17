@@ -1,8 +1,8 @@
 #include "Characters/EnemyCharacter.h"
 
+#include "Components/EnemyAttackComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Slate/SGameLayerManager.h"
-#include "Components/MyAttackEnemyComponent.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -15,7 +15,7 @@ AEnemyCharacter::AEnemyCharacter()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	bUseControllerRotationYaw = false;
 
-	AttackComp = CreateDefaultSubobject<UMyAttackEnemyComponent>(TEXT("AttackComp"));
+	AttackComp = CreateDefaultSubobject<UEnemyAttackComponent>(TEXT("AttackComp"));
 }
 
 void AEnemyCharacter::BeginPlay()
